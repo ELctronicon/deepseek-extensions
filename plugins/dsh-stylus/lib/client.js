@@ -288,16 +288,13 @@ window.__ModuleLoader__.load({
 @name           X blacked
 @advanced dropdown bg "背景图" {
   builtin "内置图（需联网）" <<<EOT url("https://pbs.twimg.com/media/GvqSQdhWAAAdli8?format=jpg&name=4096x4096") EOT;
-  custom "本地图片（选下方 bg-custom）" <<<EOT url("/*[[bg-custom]]*\/") EOT;
+  custom "本地图片（选下方 bg-custom）" <<<EOT url("/*[[bg-custom]]*/") EOT;
 }
 @advanced text bg-custom "自定义背景图（URL 或点选图）" ""
 @advanced color theme-color "主题色" #00853e
-@advanced dropdown blur "背景模糊" {
-  on "模糊" <<<EOT 2px EOT;
-  off "清晰" <<<EOT 0px EOT;
-}
+@advanced text font-color "正常文字色" rgba(255,0,0,0.7)
 ==/UserStyle== */
-/* X / Twitter "blacked" — DeepSeek Harness 移植版 */
+/* X / Twitter "blacked" — 按原样式颜色逻辑还原 */
 :root {
   --dshx-bg-image: /*[[bg]]*/;
   --dshx-green: /*[[theme-color]]*/;
@@ -305,90 +302,79 @@ window.__ModuleLoader__.load({
   --dshx-green-dark: #005a2d;
   --dshx-red: #e31c23;
   --dshx-red-dark: #5a0a0a;
-  --dshx-text: #e9ddd6;
-  --dshx-muted: #a99b93;
-  --dshx-glass: rgba(15, 17, 19, 0.85);
-  --dshx-gradient: linear-gradient(
-    90deg,
-    rgba(0, 133, 62, 0.9) 0%,
-    rgba(0, 133, 62, 0.9) 24%,
-    rgba(0, 90, 45, 0.9) 32%,
-    rgba(0, 0, 0, 0.9) 40%,
-    rgba(0, 0, 0, 0.9) 60%,
-    rgba(90, 10, 10, 0.9) 68%,
-    rgba(227, 28, 35, 0.9) 76%,
-    rgba(227, 28, 35, 0.9) 100%
-  );
+  --dshx-font: /*[[font-color]]*/;
+  --dshx-muted: #b8b8b8;
+  /* 主按钮渐变（实色按钮用，0.8） */
+  --dshx-gradient: linear-gradient(90deg,
+    rgba(0, 133, 62, 0.8) 0%,
+    rgba(0, 133, 62, 0.8) 24%,
+    rgba(0, 90, 45, 0.8) 32%,
+    rgba(0, 0, 0, 0.8) 40%,
+    rgba(0, 0, 0, 0.8) 60%,
+    rgba(90, 10, 10, 0.8) 68%,
+    rgba(227, 28, 35, 0.8) 76%,
+    rgba(227, 28, 35, 0.8) 100%);
+  /* 淡色按钮渐变（0.6） */
+  --dshx-gradient-soft: linear-gradient(90deg,
+    rgba(0, 133, 62, 0.6) 0%,
+    rgba(0, 133, 62, 0.6) 24%,
+    rgba(0, 90, 45, 0.6) 32%,
+    rgba(0, 0, 0, 0.6) 40%,
+    rgba(0, 0, 0, 0.6) 60%,
+    rgba(90, 10, 10, 0.6) 68%,
+    rgba(227, 28, 35, 0.6) 76%,
+    rgba(227, 28, 35, 0.6) 100%);
+
+  /* 文字映射：正常=红(font-color)，次要/灰色=灰 */
+  --dsw-alias-label-primary: var(--dshx-font);
+  --dsw-alias-label-secondary: var(--dshx-muted);
+  --dsw-alias-label-tertiary: var(--dshx-muted);
+  --dsw-static-neutral-bluish-400: var(--dshx-green-bright);
+  --dsw-alias-interactive-bg-hover: rgba(0, 133, 62, 0.18);
 }
-html { height: 100%; }
-body {
-  background-color: rgba(8, 10, 12, 0.9) !important;
-  color: var(--dshx-text);
-}
+/* 背景图（可选）：浅色透出，不强制黑底 */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
   background: var(--dshx-bg-image) center / cover fixed;
-  filter: blur(/*[[blur]]*/);
+  filter: blur(2px);
   opacity: 0.6;
   pointer-events: none;
 }
-a { color: var(--dshx-green-bright) !important; }
-a:hover { color: var(--dshx-green) !important; }
+/* 正常文字 → 红 */
+body { color: var(--dshx-font) !important; }
+/* 变色的文字（链接等）→ 绿 */
+a { color: var(--dshx-green) !important; }
+a:hover { color: var(--dshx-green-bright) !important; }
 ::selection { background: var(--dshx-green) !important; color: #fff !important; }
+/* 所有 svg / 标志 → 绿 */
+svg, svg * {
+  color: var(--dshx-green) !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+/* 滚动条 → 绿黑红渐变 */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-thumb { background: var(--dshx-gradient); border-radius: 6px; }
-::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.35); }
+::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.15); }
 ::-webkit-scrollbar-corner { background: transparent; }
-button {
-  background: var(--dshx-gradient) !important;
-  color: #fff !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
-}
-button:hover { filter: brightness(1.18); }
-button:active { filter: brightness(0.9); }
-button:disabled { opacity: 0.45; filter: grayscale(0.5); }
-textarea,
-input[type="text"],
-input[type="search"],
-input:not([type]),
-[contenteditable="true"] {
-  background-color: rgba(10, 12, 14, 0.9) !important;
-  color: var(--dshx-text) !important;
-  border-color: rgba(0, 133, 62, 0.4) !important;
-  caret-color: var(--dshx-green-bright) !important;
-}
+
+/* 按钮：正常按钮不加背景、不换黑底（保持 harness 原样）。
+   只有"有框/实色"的按钮才上渐变 + 白字；淡色按钮用 soft 渐变。
+   harness 按钮无统一类名，下面两个变量备用，拿到实际类名后精确套用：
+     主按钮：  background: var(--dshx-gradient) !important; color: #fff !important;
+     淡色按钮：background: var(--dshx-gradient-soft) !important; color: #fff !important; */
+
+/* 输入框：保持 harness 默认，聚焦时绿色提示 */
 textarea:focus,
 input:focus,
 [contenteditable="true"]:focus {
   border-color: var(--dshx-green) !important;
   box-shadow: 0 0 0 2px rgba(0, 133, 62, 0.35) !important;
   outline: none !important;
-}
-[role="dialog"],
-[role="menu"],
-[role="listbox"],
-[role="tooltip"] {
-  background: var(--dshx-glass) !important;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-pre,
-code {
-  background-color: rgba(0, 0, 0, 0.55) !important;
-  border: 1px solid rgba(0, 133, 62, 0.25) !important;
-}
-:root {
-  --dsw-alias-label-primary: var(--dshx-text);
-  --dsw-alias-label-secondary: var(--dshx-muted);
-  --dsw-alias-label-tertiary: var(--dshx-muted);
-  --dsw-alias-bg-input: rgba(10, 12, 14, 0.9);
-  --dsw-alias-bg-module-platform: var(--dshx-glass);
-  --dsw-alias-border-l2: rgba(0, 133, 62, 0.28);
-  --dsw-static-neutral-bluish-400: var(--dshx-green-bright);
-  --dsw-alias-interactive-bg-hover: rgba(0, 133, 62, 0.18);
+  caret-color: var(--dshx-green-bright) !important;
 }`;
 
 		// ══════════════════════════════════════════════════════════════════
