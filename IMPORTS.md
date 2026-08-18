@@ -15,13 +15,16 @@ deepseek-extensions/
 ├── README.md            # 仓库说明
 ├── IMPORTS.md           # 本文档
 ├── plugins/             # 插件包：一个子目录 = 一个包
-│   └── dsh-stylus/
-├── styles/              # 样式主题：一个文件 = 一个主题
-│   └── harness-blacked.css
+│   └── dsh-stylus/      #   样式插件（内置样式预设，见 PRESETS）
+├── styles/              # （可选）独立主题文件：一个文件 = 一个主题
 ├── tests/               # 测试脚本（纯 Node，无依赖）
 │   └── test-parser.cjs
 └── docs/                # （可选）更多文档
 ```
+
+> 样式既可以**内置在插件预设**里（`plugins/dsh-stylus/lib/client.js` 的 `PRESETS` 数组，
+> 新建样式时下拉选择），也可以**单独放 `styles/`**（一个文件一个主题，粘贴进"新建样式"即可）。
+> 两者都支持，按喜好选择。
 
 允许出现任何额外目录（`extras/`、`scripts/`、`assets/`……），导入时忽略不认识的内容即可。
 

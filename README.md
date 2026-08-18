@@ -4,7 +4,7 @@
 
 ## 内容
 
-- `plugins/dsh-stylus/` — 自定义样式插件（Stylus 风格：注入 CSS、多主题切换、配置面板）
+- `plugins/dsh-stylus/` — 自定义样式插件（Stylus 风格：注入 CSS、多主题切换、配置面板、内置样式预设）
 - `tests/` — 测试（`node tests/test-parser.cjs`）
 
 ## 说明
@@ -23,7 +23,7 @@
    ```
 
 2. 重启 DeepSeek Harness → **设置 → 样式** 就能用了。
-3. 样式：把 `styles/` 下文件内容粘进"新建样式"即可；带 `==UserStyle==` 配置头的会自动生成配置面板。
+3. 新建样式：先选内置预设（`X blacked` 等）再点 **+ 新建样式**；带 `==UserStyle==` 配置头的会自动生成配置面板。
 
 ## 导入格式
 

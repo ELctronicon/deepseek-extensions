@@ -391,6 +391,13 @@ code {
   --dsw-alias-interactive-bg-hover: rgba(0, 133, 62, 0.18);
 }`;
 
+		// Built-in style presets (the "styles" the plugin ships with). New themes
+		// are created from the selected preset; add more entries here anytime.
+		var PRESETS = [
+			{ name: "X blacked", css: BLACKED_TEMPLATE },
+			{ name: "空白模板", css: BLANK_TEMPLATE }
+		];
+
 		// ══════════════════════════════════════════════════════════════════
 		//  the settings section component
 		// ══════════════════════════════════════════════════════════════════
@@ -410,6 +417,9 @@ code {
 			var restoreDraft = React.useState(null);  // parsed backup awaiting confirm
 			var draft = restoreDraft[0];
 			var setDraft = restoreDraft[1];
+			var presetSel = React.useState(0);        // selected built-in preset index
+			var presetIndex = presetSel[0];
+			var setPresetIndex = presetSel[1];
 
 			var imgInputRef = React.useRef(null);
 			var restoreInputRef = React.useRef(null);
@@ -433,8 +443,8 @@ code {
 			}
 
 			function addTheme() {
-				var n = store.themes.length + 1;
-				var theme = { id: uid(), name: "样式 " + n, css: n === 1 ? BLACKED_TEMPLATE : BLANK_TEMPLATE };
+				var preset = PRESETS[presetIndex] || PRESETS[0];
+				var theme = { id: uid(), name: preset.name, css: preset.css };
 				var next = { themes: store.themes.concat([theme]), activeId: theme.id };
 				var decls = parseUserStyle(theme.css);
 				if (decls) next.configs = Object.assign({}, store.configs, { [theme.id]: defaultConfig(decls) });
@@ -622,8 +632,16 @@ code {
 						})
 				),
 
-				// actions: new + backup/restore
+				// actions: new (from preset) + backup/restore
 				React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" } },
+					React.createElement("select", {
+						value: presetIndex,
+						onChange: function (e) { setPresetIndex(parseInt(e.target.value, 10)); },
+						title: "内置样式预设",
+						style: Object.assign({}, FIELD_STYLE, { padding: "4px 8px" })
+					}, PRESETS.map(function (p, i) {
+						return React.createElement("option", { key: p.name, value: i }, "预设：" + p.name);
+					})),
 					button("+ 新建样式", addTheme),
 					button("备份样式（导出文件）", exportBackup),
 					button("从备份恢复", function () { if (restoreInputRef.current) restoreInputRef.current.click(); }),
