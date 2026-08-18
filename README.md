@@ -4,7 +4,7 @@
 
 ## 内容
 
-- `plugins/dsh-stylus/` — 自定义样式插件（Stylus 风格：注入 CSS、多主题切换、配置面板、内置样式预设）
+- `plugins/dsh-stylus/` — 自定义样式插件（Stylus 风格：注入 CSS、多主题切换、配置面板、自带 blacked 主题）
 - `tests/` — 测试（`node tests/test-parser.cjs`）
 
 ## 说明
