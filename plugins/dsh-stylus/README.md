@@ -44,7 +44,7 @@ Stylus 风格的自定义样式插件，运行在 DeepSeek Harness Web 界面（
 :root { --bg: /*[[bg]]*/; --theme: /*[[theme-color]]*/; }
 ```
 
-详细约定见仓库根 [IMPORTS.md](../IMPORTS.md)。
+详细约定见仓库 [docs/IMPORTS.md](../docs/IMPORTS.md)。
 
 ## 许可
 

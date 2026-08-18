@@ -170,6 +170,29 @@ cp -r plugins/dsh-stylus "$DSH_HOME/profiles/node_modules/dsh-stylus"
 
 ---
 
+## 导入校验清单（导入器按此逐项检查）
+
+**插件包**
+- [ ] 目录名 === `package.json` 的 `name`
+- [ ] 有 `dsh.client`（`platform: "web"`）
+- [ ] `exports["./client"]` 存在且文件可读
+- [ ] client bundle 以 `window.__ModuleLoader__.load({ id, factory })` 开头，`id` 与包名一致
+- [ ] factory 导出 `apply`（`inject` 可选）
+
+**样式**
+- [ ] 是纯 CSS，或带 `==UserStyle==` 头
+- [ ] 带配置头时：`@advanced` 声明合法（dropdown 有 `<<<EOT ... EOT;` 选项、color 有默认色、checkbox 默认 true/false）
+- [ ] 占位符 `/*[[name]]*/` 找不到对应声明时**保留原样不报错**（允许）
+
+**安全（硬性）**
+- [ ] 全库无 token / 密钥 / 本地绝对路径 / 账号信息
+
+**导入动作**
+- 插件 → 复制到 `$DSH_HOME/profiles/node_modules/<name>/` → `cordis.patch.yml` 注册 → 重启
+- 样式 → dsh-stylus 面板粘贴进"新建样式"，或作为新预设加进插件的 `PRESETS`
+
+---
+
 ## 自由扩展（不做限制的部分）
 
 - 新增目录、新增字段、新增 `@advanced` 类型（只要导入器能识别关键标记）
