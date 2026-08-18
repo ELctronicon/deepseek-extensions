@@ -1,18 +1,17 @@
 # DeepSeek Harness Extensions
 
-我自己用的 DeepSeek Harness 扩展：插件和样式，放这里备份 + 跨设备同步用的。
+自己用的扩展，放这里备份
 
 ## 内容
 
 - `plugins/dsh-stylus/` — 自定义样式插件（Stylus 风格：注入 CSS、多主题切换、配置面板）
-- `styles/` — 样式主题（比如 blacked 那套绿黑红）
-- `tests/` — 零依赖小测试（`node tests/test-parser.cjs`）
+- `tests/` — 测试（`node tests/test-parser.cjs`）
 
-## 自用说明
+## 说明
 
 这是**自用**仓库，按我自己的习惯整理，没打算做成标准产品。你碰巧看到的话，喜欢就随便拿去用，文档不一定全，见谅。
 
-## 给自己备忘的快速开始
+## 快速开始
 
 1. 插件装法：把 `plugins/dsh-stylus` 复制到 `$DSH_HOME/profiles/node_modules/dsh-stylus`，
    然后在 `$DSH_HOME/profiles/web/cordis.patch.yml` 加一行注册：
