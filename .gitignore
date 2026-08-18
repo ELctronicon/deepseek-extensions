@@ -1,0 +1,22 @@
+# ── 绝不提交的敏感内容 ─────────────────────────────
+# dsh 数据（凭据、会话、设置——可能含个人信息）
+.credentials.yaml
+sessions/
+settings.yaml
+*.jsonl
+.dsh/
+
+# token / 密钥
+token.txt
+*.token
+*.key
+*.pem
+.env
+.env.*
+
+# 本地杂项
+*.local
+node_modules/
+.DS_Store
+Thumbs.db
+*.log

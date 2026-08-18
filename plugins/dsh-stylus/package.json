@@ -1,0 +1,21 @@
+{
+  "name": "dsh-stylus",
+  "version": "1.0.0",
+  "description": "Stylus-like custom CSS themes for the dsh web UI: edit styles, switch between multiple saved themes.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "inject": [
+        "slots"
+      ]
+    }
+  },
+  "license": "MIT"
+}
