@@ -361,11 +361,25 @@ svg, svg * {
 ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.15); }
 ::-webkit-scrollbar-corner { background: transparent; }
 
-/* 按钮：正常按钮不加背景、不换黑底（保持 harness 原样）。
-   只有"有框/实色"的按钮才上渐变 + 白字；淡色按钮用 soft 渐变。
-   harness 按钮无统一类名，下面两个变量备用，拿到实际类名后精确套用：
-     主按钮：  background: var(--dshx-gradient) !important; color: #fff !important;
-     淡色按钮：background: var(--dshx-gradient-soft) !important; color: #fff !important; */
+/* ── 按钮：只给"实色填充"的按钮上渐变 + 白字 ──
+   透明/图标/描边按钮（background:0 0）不受影响，保持原样。
+   通过 harness 的按钮填充变量实现（类名 hash 变化也不怕）。 */
+:root {
+  /* 主按钮（发送、primary 等）→ 绿黑红渐变 */
+  --dsw-alias-button-info-fill: var(--dshx-gradient);
+  --dsw-alias-button-info-hover: var(--dshx-gradient);
+  --dsw-alias-button-primary-fill: var(--dshx-gradient);
+  --dsw-alias-label-primary-foreground: #ffffff;
+  /* 淡色按钮（ghost 激活、保存等）→ 淡渐变 */
+  --dsw-alias-button-ghost-active-fill: var(--dshx-gradient-soft);
+  --dsw-alias-interactive-bg-primary: var(--dshx-gradient-soft);
+}
+/* 兜底：CSS Modules 类名后缀 _primary / _primaryButton */
+button[class$="_primary"],
+button[class$="_primaryButton"] {
+  background: var(--dshx-gradient) !important;
+  color: #fff !important;
+}
 
 /* 输入框：保持 harness 默认，聚焦时绿色提示 */
 textarea:focus,
