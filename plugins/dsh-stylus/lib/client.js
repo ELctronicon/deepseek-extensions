@@ -304,31 +304,32 @@ window.__ModuleLoader__.load({
   --dshx-red-dark: #5a0a0a;
   --dshx-font: /*[[font-color]]*/;
   --dshx-muted: #b8b8b8;
-  /* 主按钮渐变（实色按钮用，0.8） */
+  /* 主按钮渐变（调淡，0.55） */
   --dshx-gradient: linear-gradient(90deg,
-    rgba(0, 133, 62, 0.8) 0%,
-    rgba(0, 133, 62, 0.8) 24%,
-    rgba(0, 90, 45, 0.8) 32%,
-    rgba(0, 0, 0, 0.8) 40%,
-    rgba(0, 0, 0, 0.8) 60%,
-    rgba(90, 10, 10, 0.8) 68%,
-    rgba(227, 28, 35, 0.8) 76%,
-    rgba(227, 28, 35, 0.8) 100%);
-  /* 淡色按钮渐变（0.6） */
+    rgba(0, 133, 62, 0.55) 0%,
+    rgba(0, 133, 62, 0.55) 24%,
+    rgba(0, 90, 45, 0.55) 32%,
+    rgba(0, 0, 0, 0.55) 40%,
+    rgba(0, 0, 0, 0.55) 60%,
+    rgba(90, 10, 10, 0.55) 68%,
+    rgba(227, 28, 35, 0.55) 76%,
+    rgba(227, 28, 35, 0.55) 100%);
+  /* 淡色按钮渐变（0.35） */
   --dshx-gradient-soft: linear-gradient(90deg,
-    rgba(0, 133, 62, 0.6) 0%,
-    rgba(0, 133, 62, 0.6) 24%,
-    rgba(0, 90, 45, 0.6) 32%,
-    rgba(0, 0, 0, 0.6) 40%,
-    rgba(0, 0, 0, 0.6) 60%,
-    rgba(90, 10, 10, 0.6) 68%,
-    rgba(227, 28, 35, 0.6) 76%,
-    rgba(227, 28, 35, 0.6) 100%);
+    rgba(0, 133, 62, 0.35) 0%,
+    rgba(0, 133, 62, 0.35) 24%,
+    rgba(0, 90, 45, 0.35) 32%,
+    rgba(0, 0, 0, 0.35) 40%,
+    rgba(0, 0, 0, 0.35) 60%,
+    rgba(90, 10, 10, 0.35) 68%,
+    rgba(227, 28, 35, 0.35) 76%,
+    rgba(227, 28, 35, 0.35) 100%);
 
-  /* 文字映射：正常=红(font-color)，次要/灰色=灰 */
+  /* 文字映射：正常=红(font-color)，次要/说明/灰色=灰 */
   --dsw-alias-label-primary: var(--dshx-font);
   --dsw-alias-label-secondary: var(--dshx-muted);
   --dsw-alias-label-tertiary: var(--dshx-muted);
+  --dsw-alias-label-caption: var(--dshx-muted);
   --dsw-static-neutral-bluish-400: var(--dshx-green-bright);
   --dsw-alias-interactive-bg-hover: rgba(0, 133, 62, 0.18);
 }
@@ -343,13 +344,13 @@ body::before {
   opacity: 0.6;
   pointer-events: none;
 }
-/* 正常文字 → 红 */
+/* 正常文字 → 红（兜底） */
 body { color: var(--dshx-font) !important; }
 /* 变色的文字（链接等）→ 绿 */
 a { color: var(--dshx-green) !important; }
 a:hover { color: var(--dshx-green-bright) !important; }
 ::selection { background: var(--dshx-green) !important; color: #fff !important; }
-/* 所有 svg / 标志 → 绿 */
+/* 所有 svg / 标志 → 绿（按钮内的除外，见下） */
 svg, svg * {
   color: var(--dshx-green) !important;
   fill: currentColor !important;
@@ -361,24 +362,40 @@ svg, svg * {
 ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.15); }
 ::-webkit-scrollbar-corner { background: transparent; }
 
-/* ── 按钮：只给"实色填充"的按钮上渐变 + 白字 ──
-   透明/图标/描边按钮（background:0 0）不受影响，保持原样。
-   通过 harness 的按钮填充变量实现（类名 hash 变化也不怕）。 */
+/* ── 按钮：只给"实色填充"的按钮上渐变 ──
+   通过 harness 按钮变量覆盖（类名 hash 变化也不怕）。
+   透明/图标/描边按钮（background:0 0）保持原样。 */
 :root {
-  /* 主按钮（发送、primary 等）→ 绿黑红渐变 */
   --dsw-alias-button-info-fill: var(--dshx-gradient);
   --dsw-alias-button-info-hover: var(--dshx-gradient);
   --dsw-alias-button-primary-fill: var(--dshx-gradient);
   --dsw-alias-label-primary-foreground: #ffffff;
-  /* 淡色按钮（ghost 激活、保存等）→ 淡渐变 */
   --dsw-alias-button-ghost-active-fill: var(--dshx-gradient-soft);
   --dsw-alias-interactive-bg-primary: var(--dshx-gradient-soft);
 }
-/* 兜底：CSS Modules 类名后缀 _primary / _primaryButton */
-button[class$="_primary"],
-button[class$="_primaryButton"] {
-  background: var(--dshx-gradient) !important;
+/* 实色/淡色按钮清单（有渐变背景的按钮）：
+   前景（文字 + 图标）统一白色 */
+button:is([class$="_primary"], [class$="_primaryButton"], [class$="_add"],
+          [class$="_message"], [class$="_noteSave"], [class$="_save"],
+          [class$="_rowStatus"], [class$="_inUse"]) {
   color: #fff !important;
+}
+button:is([class$="_primary"], [class$="_primaryButton"], [class$="_add"],
+          [class$="_message"], [class$="_noteSave"], [class$="_save"],
+          [class$="_rowStatus"], [class$="_inUse"]) svg,
+button:is([class$="_primary"], [class$="_primaryButton"], [class$="_add"],
+          [class$="_message"], [class$="_noteSave"], [class$="_save"],
+          [class$="_rowStatus"], [class$="_inUse"]) svg * {
+  color: #fff !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+/* 透明图标按钮内的图标保持绿色 */
+button[class$="_iconButton"] svg,
+button[class$="_iconButton"] svg * {
+  color: var(--dshx-green) !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
 }
 
 /* 输入框：保持 harness 默认，聚焦时绿色提示 */
